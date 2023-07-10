@@ -5,8 +5,8 @@ authors:
   - LolsonX <xlolsonx@gmail.com>
 
 targets:
-  task_manager:
-    main: src/task_manager.cr
+  crystal_todo:
+    main: src/crystal_todo.cr
 
 crystal: 1.8.2
 

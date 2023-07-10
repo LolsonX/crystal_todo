@@ -1,6 +1,6 @@
 require "./spec_helper"
 
-describe TaskManager do
+describe CrystalTodo do
   # TODO: Write tests
 
   it "works" do
