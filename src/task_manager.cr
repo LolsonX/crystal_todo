@@ -1,46 +1,48 @@
 require "./data/*"
+require "./ui/main_menu"
+require "./actions"
 
 task_manager = Data::TaskManager.new
-main_menu = [
-  "1. Add task",
-  "2. Complete task",
-  "3. List tasks",
-  "4. Remove task",
-  "5. Exit",
-  "Enter your choice: ",
-].join("\n")
+main_menu = Ui::MainMenu.new
+main_menu.add_entry(
+  Ui::MenuEntry.new(id: 1, description: "Add task") { Actions.add_task(task_manager) }
+)
+main_menu.add_entry(
+  Ui::MenuEntry.new(id: 2, description: "List tasks") { Actions.list_tasks(task_manager) }
+)
+main_menu.add_entry(
+  Ui::MenuEntry.new(id: 3, description: "Complete task") { Actions.complete_task(task_manager) }
+)
+main_menu.add_entry(
+  Ui::MenuEntry.new(id: 4, description: "Remove task") { Actions.remove_task(task_manager) }
+)
+main_menu.add_entry(
+  Ui::MenuEntry.new(id: 5, description: "Exit") { :exit }
+)
+clear_screen
+
 loop do
-  print(main_menu)
+  clear_screen
+  print(main_menu.to_s)
   choice = gets()
   next unless choice
 
-  puts "\e[2J\e[f"
   case choice.to_i
-  when 1
-    puts "Enter name of task:"
-    name = gets
-    if name
-      task_manager.add_task(name: name.chomp)
+  when 1, 2, 3, 4, 5
+    action = main_menu.get_action(choice.to_i)
+    result = if action == :error
+               next
+             elsif action.responds_to?(:execute)
+               action.execute
+             end
+    if result == :exit
+      break
     end
-  when 2
-    puts "Which task You want to complete?"
-    puts task_manager.list_tasks.join("\n")
-    choice = gets
-    if choice && choice.to_i?
-      task_manager.complete_task(choice.to_i - 1)
-    end
-  when 3
-    puts task_manager.list_tasks.join("\n")
-    gets
-  when 4
-    puts "Which task You want to remove?"
-    choice = gets
-    if choice && choice.to_i?
-      task_manager.remove_task(choice.to_i - 1)
-    end
-  when 5
-    break
   else
     puts "Invalid choice!"
   end
+end
+
+def clear_screen
+  print "\e[2J\e[f"
 end

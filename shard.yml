@@ -1,8 +1,8 @@
-name: task_manager
+name: crystal_todo
 version: 0.1.0
 
 authors:
-  - bf-kostrowski <karol@bflabs.com>
+  - LolsonX <xlolsonx@gmail.com>
 
 targets:
   task_manager:
