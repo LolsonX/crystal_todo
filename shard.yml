@@ -1,0 +1,13 @@
+name: task_manager
+version: 0.1.0
+
+authors:
+  - bf-kostrowski <karol@bflabs.com>
+
+targets:
+  task_manager:
+    main: src/task_manager.cr
+
+crystal: 1.8.2
+
+license: MIT
