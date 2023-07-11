@@ -19,6 +19,9 @@ main_menu.add_entry(
 main_menu.add_entry(
   Ui::MenuEntry.new(id: 5, description: "Exit") { :exit }
 )
+main_menu.add_entry(
+  Ui::MenuEntry.new(id: 6, description: "Save") { Actions.save(task_manager) }
+)
 clear_screen
 
 loop do
@@ -28,7 +31,7 @@ loop do
   next unless choice
 
   case choice.to_i
-  when 1, 2, 3, 4, 5
+  when 1, 2, 3, 4, 5, 6
     action = main_menu.get_action(choice.to_i)
     result = if action == :error
                next

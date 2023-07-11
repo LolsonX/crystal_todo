@@ -8,6 +8,7 @@ module Actions
   end
 
   def list_tasks(task_manager)
+    puts "PRIORITY\t|NAME\t|COMPLTED|COMPLETION DATE"
     print task_manager.list_tasks.join("/n")
     STDIN.raw { STDIN.read_char }
     :ok
@@ -29,5 +30,10 @@ module Actions
 
     task_manager.remove_task(choice.to_i - 1)
     :ok
+  end
+
+  def save(task_manager)
+    puts task_manager.to_json
+    gets
   end
 end

@@ -1,17 +1,44 @@
+require "json"
+
 module Data
   class Task
-    property name : String
-    property completed : Bool
+    enum Priority
+      Low
+      Normal
+      High
+    end
 
-    def initialize(@name : String, @completed : Bool = false)
+    include Comparable(Task)
+    include JSON::Serializable
+
+    @[JSON::Field(key: "name")]
+    property name : String
+    @[JSON::Field(key: "completed")]
+    property completed : Bool
+    @[JSON::Field(key: "priority")]
+    property priority : Priority
+    @[JSON::Field(key: "completed_at")]
+    property completed_at : Time?
+
+    def initialize(@name : String, @completed = false, @priority = Priority::Normal)
     end
 
     def to_s : String
-      "#{name} : #{completed ? "[x]" : "[ ]"}"
+      "[#{priority.to_s}]\t|#{name}:\t|#{completed ? "[x]\t|#{completed_at}" : "[ ]\t|"}"
     end
 
     def format(index)
       "#{index}. #{to_s}"
+    end
+
+    def complete
+      self.completed = true
+      self.completed_at = Time.local
+      self
+    end
+
+    def <=>(other : Task)
+      self.priority <=> other.priority
     end
   end
 end

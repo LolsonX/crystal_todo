@@ -1,7 +1,11 @@
+require "json"
 require "./task"
 
 module Data
   class TaskManager
+    include JSON::Serializable
+
+    @[JSON::Field(key: "tasks")]
     property tasks : Array(Task)
 
     def initialize
@@ -10,6 +14,7 @@ module Data
 
     def add_task(name : String)
       @tasks << Task.new(name: name)
+      @tasks.sort!
     end
 
     def remove_task(index)
@@ -20,7 +25,7 @@ module Data
 
     def complete_task(index : Int32) : Task | Bool
       if index >= 0 && index < tasks.size
-        tasks[index].completed = true
+        tasks[index].complete
       else
         false
       end
